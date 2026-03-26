@@ -2,7 +2,7 @@ const CACHE_NAME = 'portfolio-v1';
 const OFFLINE_URL = '/index.html';
 const TO_CACHE = [
   '/',
-  '/protfolio.html',
+  '/index.html',
   '/favicon.svg',
   '/manifest.json'
 ];
@@ -19,6 +19,6 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(resp => resp || fetch(event.request).catch(()=>caches.match('/protfolio.html')))
+    caches.match(event.request).then(resp => resp || fetch(event.request).catch(()=>caches.match('/index.html')))
   );
 });
