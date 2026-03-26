@@ -4,6 +4,8 @@
     { "src": "index.html", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/service-worker.js", "headers": { "cache-control": "public, max-age=0, must-revalidate" }, "dest": "/service-worker.js" }
+    { "src": "/service-worker.js", "headers": { "cache-control": "public, max-age=0, must-revalidate" }, "dest": "/service-worker.js" },
+    { "src": "/", "dest": "/index.html" },
+    { "src": "(.*)", "dest": "/index.html" }
   ]
 }
