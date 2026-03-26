@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dileep Kumar C — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0d0c;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --rust: #c94a2a;
+    --rust-light: #f0d4cb;
+    --gold: #c8993e;
+    --muted: #6b6257;
+    --border: #d4ccc0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--rust);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--rust);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.18s ease;
+    mix-blend-mode: multiply;
+  }
+  body:has(a:hover) .cursor-ring,
+  body:has(button:hover) .cursor-ring { transform: scale(2); opacity: 0.5; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.6;
+  }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 100;
+    mix-blend-mode: multiply;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--rust); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    padding: 120px 48px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .hero-tag {
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rust);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before {
+    content: ''; display: block;
+    width: 32px; height: 1px;
+    background: var(--rust);
+  }
+  h1.hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  h1.hero-name span {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--rust);
+  }
+  .hero-role {
+    font-size: 12px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+    margin: 24px 0 40px;
+    border-left: 2px solid var(--rust);
+    padding-left: 14px;
+  }
+  .hero-desc {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px; line-height: 1.5;
+    color: var(--ink); max-width: 380px;
+    font-style: italic;
+  }
+  .hero-cta {
+    margin-top: 48px;
+    display: flex; gap: 16px; align-items: center;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none;
+    border: none; cursor: none;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--rust); transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--ink);
+    color: var(--ink); background: transparent;
+    padding: 13px 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none;
+    cursor: none;
+    transition: all 0.2s; display: inline-block;
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--cream);
+  }
+  .hero-right img {
+    width: 100%; height: 100%; object-fit: cover;
+    mix-blend-mode: multiply; filter: grayscale(20%) contrast(1.05);
+  }
+  .hero-right-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 60%, var(--rust-light) 100%);
+    mix-blend-mode: multiply;
+  }
+  /* Big decorative index number */
+  .hero-index {
+    position: absolute; bottom: 40px; right: 40px;
+    font-family: 'Syne', sans-serif;
+    font-size: 180px; font-weight: 800;
+    color: var(--rust); opacity: 0.08;
+    line-height: 1; user-select: none;
+    letter-spacing: -0.05em;
+  }
+  /* Floating tech tags */
+  .tech-tag {
+    position: absolute;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink);
+    border: 1px solid var(--border);
+    background: var(--paper);
+    padding: 6px 12px;
+  }
+
+  /* SECTION COMMON */
+  section { position: relative; z-index: 1; }
+  .section-header {
+    display: flex; align-items: baseline; gap: 20px;
+    margin-bottom: 64px;
+  }
+  .section-num {
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--rust); text-transform: uppercase;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .section-line {
+    flex: 1; height: 1px; background: var(--border);
+    margin-bottom: 6px;
+  }
+
+  /* SKILLS */
+  .skills-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--border);
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .skill-cell {
+    background: var(--paper);
+    padding: 36px 32px;
+    transition: background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .skill-cell:hover { background: var(--cream); }
+  .skill-cell:hover .skill-hover-bg { opacity: 1; }
+  .skill-hover-bg {
+    position: absolute; bottom: -20px; right: -20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 80px; font-weight: 800;
+    color: var(--rust); opacity: 0;
+    transition: opacity 0.3s;
+    user-select: none; pointer-events: none;
+    line-height: 1;
+  }
+  .skill-icon {
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--rust);
+    margin-bottom: 12px;
+  }
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .skill-desc {
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+  }
+
+  /* PROJECTS */
+  .projects-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--border);
+  }
+  .projects-list { display: flex; flex-direction: column; }
+  .project-row {
+    display: grid;
+    grid-template-columns: 60px 1fr auto 120px;
+    align-items: center;
+    gap: 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none; color: inherit;
+    transition: padding 0.3s;
+    cursor: none;
+  }
+  .project-row:first-child { border-top: 1px solid var(--border); }
+  .project-row:hover { padding-left: 16px; padding-right: 16px; background: var(--cream); }
+  .project-row:hover .project-arrow { transform: translateX(6px) rotate(-45deg); }
+  .proj-num {
+    font-size: 11px; color: var(--muted); letter-spacing: 0.05em;
+  }
+  .proj-info {}
+  .proj-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .proj-desc { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 500px; }
+  .proj-tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .proj-tag {
+    font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--border); padding: 4px 8px;
+  }
+  .project-arrow {
+    font-size: 20px; color: var(--rust);
+    transition: transform 0.25s;
+    display: inline-block;
+  }
+
+  /* EXPERIENCE */
+  .exp-section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  }
+  .exp-item { margin-bottom: 48px; }
+  .exp-date {
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--rust);
+    margin-bottom: 12px;
+  }
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700; margin-bottom: 4px;
+  }
+  .exp-company {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-size: 16px;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .exp-desc { font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+    background: var(--ink); color: var(--paper);
+    position: relative; overflow: hidden;
+  }
+  .contact-section::before {
+    content: 'HELLO';
+    position: absolute; top: -40px; left: -20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 280px; font-weight: 800;
+    color: var(--paper); opacity: 0.03;
+    letter-spacing: -0.05em; user-select: none;
+    white-space: nowrap;
+  }
+  .contact-section .section-title { color: var(--paper); }
+  .contact-section .section-line { background: #333; }
+  .contact-section .section-num { color: var(--gold); }
+  .contact-desc {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px; line-height: 1.5;
+    font-style: italic; color: #bbb;
+    max-width: 480px; margin-bottom: 48px;
+  }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    background: #333; border: 1px solid #333;
+    max-width: 640px; margin-bottom: 48px;
+  }
+  .contact-cell {
+    background: var(--ink); padding: 24px 28px;
+    transition: background 0.2s;
+  }
+  .contact-cell:hover { background: #1a1916; }
+  .contact-label {
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .contact-val {
+    font-size: 14px; color: var(--paper);
+    text-decoration: none;
+  }
+  .contact-val:hover { color: var(--gold); }
+  .footer-line {
+    font-size: 10px; color: #555;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden; padding: 14px 0;
+    background: var(--cream);
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0 32px; color: var(--muted);
+    display: flex; align-items: center; gap: 32px;
+  }
+  .marquee-dot {
+    width: 4px; height: 4px; background: var(--rust);
+    border-radius: 50%; flex-shrink: 0;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SCROLL ANIMATIONS */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute; bottom: 40px; left: 48px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .scroll-line {
+    width: 40px; height: 1px; background: var(--muted);
+    animation: scroll-line 2s ease-in-out infinite;
+  }
+  @keyframes scroll-line {
+    0%, 100% { width: 40px; }
+    50% { width: 12px; }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 100px 24px 60px; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .projects-section, .skills-section { padding: 80px 24px; }
+    .project-row { grid-template-columns: 40px 1fr; }
+    .proj-tags, .project-arrow { display: none; }
+    .exp-section { grid-template-columns: 1fr; padding: 80px 24px; gap: 0; }
+    .contact-section { padding: 80px 24px; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">DK</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1 class="hero-name">
+      Dileep<br>
+      <span>Kumar</span><br>
+      C.
+    </h1>
+    <p class="hero-role">Full Stack Developer · Bangalore, India</p>
+    <p class="hero-desc">
+      Building systems that think. Web platforms that breathe. Code that solves.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">See Work</a>
+      <a href="mailto:dileepkmrc@gmail.com" class="btn-outline">Say Hello</a>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="c:\Users\dilee\Downloads\port\passport size photo.jpg" alt="Dileep Kumar">
+    <div class="hero-right-overlay"></div>
+    <div class="hero-index">01</div>
+    <div class="tech-tag" style="top: 80px; left: 32px;">Java · Spring Boot</div>
+    <div class="tech-tag" style="top: 180px; right: 24px;">React · Next.js</div>
+    <div class="tech-tag" style="bottom: 120px; left: 24px;">Python · TensorFlow</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Java<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Spring Boot<span class="marquee-dot"></span></span>
+    <span class="marquee-item">React<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Next.js<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Python<span class="marquee-dot"></span></span>
+    <span class="marquee-item">TensorFlow<span class="marquee-dot"></span></span>
+    <span class="marquee-item">MySQL<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Flask<span class="marquee-dot"></span></span>
+    <span class="marquee-item">TypeScript<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Tailwind<span class="marquee-dot"></span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Java<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Spring Boot<span class="marquee-dot"></span></span>
+    <span class="marquee-item">React<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Next.js<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Python<span class="marquee-dot"></span></span>
+    <span class="marquee-item">TensorFlow<span class="marquee-dot"></span></span>
+    <span class="marquee-item">MySQL<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Flask<span class="marquee-dot"></span></span>
+    <span class="marquee-item">TypeScript<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Tailwind<span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-num">02 / Skills</div>
+      <h2 class="section-title">What I<br><em style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;">know.</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-cell">
+      <div class="skill-icon">01 / Lang</div>
+      <div class="skill-name">Java</div>
+      <div class="skill-desc">OOP, DSA, Spring ecosystem, REST APIs</div>
+      <div class="skill-hover-bg">J</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">02 / Lang</div>
+      <div class="skill-name">Python</div>
+      <div class="skill-desc">ML/AI, scripting, Flask, TensorFlow</div>
+      <div class="skill-hover-bg">Py</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">03 / Front</div>
+      <div class="skill-name">React</div>
+      <div class="skill-desc">Next.js, TypeScript, Tailwind, component design</div>
+      <div class="skill-hover-bg">Rx</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">04 / Back</div>
+      <div class="skill-name">Spring Boot</div>
+      <div class="skill-desc">REST APIs, JPA, Security, microservices</div>
+      <div class="skill-hover-bg">SB</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">05 / DB</div>
+      <div class="skill-name">MySQL</div>
+      <div class="skill-desc">Schema design, queries, data modeling</div>
+      <div class="skill-hover-bg">DB</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">06 / AI</div>
+      <div class="skill-name">AI / ML</div>
+      <div class="skill-desc">CNN, deep learning, model deployment</div>
+      <div class="skill-hover-bg">AI</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-num">03 / Projects</div>
+      <h2 class="section-title">Things<br><em style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;">I built.</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-list">
+
+    <a href="https://kumar-workings.vercel.app/" target="_blank" class="project-row reveal">
+      <span class="proj-num">01</span>
+      <div class="proj-info">
+        <div class="proj-name">Biomarker Intelligence Platform</div>
+        <div class="proj-desc">Healthcare analytics platform with interactive charts for clinical decisions. Built with Next.js, React, TypeScript & Tailwind CSS.</div>
+      </div>
+      <div class="proj-tags">
+        <span class="proj-tag">Next.js</span>
+        <span class="proj-tag">TypeScript</span>
+        <span class="proj-tag">React</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://dileep-kumarc.github.io/space-shooters/" target="_blank" class="project-row reveal">
+      <span class="proj-num">02</span>
+      <div class="proj-info">
+        <div class="proj-name">AI Space Defense</div>
+        <div class="proj-desc">Cyberpunk space shooter exploring AI ethics with dynamic difficulty & global leaderboard. Built with p5.js + Supabase.</div>
+      </div>
+      <div class="proj-tags">
+        <span class="proj-tag">p5.js</span>
+        <span class="proj-tag">Supabase</span>
+        <span class="proj-tag">JS</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/Dileep-kumarc/Brain-Tumor-Detection-using-CNN.git" target="_blank" class="project-row reveal">
+      <span class="proj-num">03</span>
+      <div class="proj-info">
+        <div class="proj-name">Brain Tumor Detection (CNN)</div>
+        <div class="proj-desc">Deep learning model achieving 92% accuracy on MRI scans using TensorFlow & PyTorch. Medical AI in practice.</div>
+      </div>
+      <div class="proj-tags">
+        <span class="proj-tag">Python</span>
+        <span class="proj-tag">TensorFlow</span>
+        <span class="proj-tag">CNN</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/Dileep-kumarc/AIhub.git" target="_blank" class="project-row reveal">
+      <span class="proj-num">04</span>
+      <div class="proj-info">
+        <div class="proj-name">AI Central Hub</div>
+        <div class="proj-desc">ML project-sharing platform with secure login, role-based access, code previews, and user feedback. Full-stack Flask + MySQL.</div>
+      </div>
+      <div class="proj-tags">
+        <span class="proj-tag">Flask</span>
+        <span class="proj-tag">MySQL</span>
+        <span class="proj-tag">JS</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://www.freeonlinecalculators.online/" target="_blank" class="project-row reveal">
+      <span class="proj-num">05</span>
+      <div class="proj-info">
+        <div class="proj-name">Free Online Calculators</div>
+        <div class="proj-desc">Responsive utility tool website featuring multiple calculator types, built with HTML, CSS, JS & Bootstrap.</div>
+      </div>
+      <div class="proj-tags">
+        <span class="proj-tag">HTML</span>
+        <span class="proj-tag">Bootstrap</span>
+        <span class="proj-tag">JS</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="exp-section" id="experience">
+  <div>
+    <div class="section-header reveal" style="margin-bottom: 48px;">
+      <div>
+        <div class="section-num">04 / Exp</div>
+        <h2 class="section-title">Where<br><em style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;">I worked.</em></h2>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Jul 2025 – Present</div>
+      <div class="exp-role">Java Full Stack Intern</div>
+      <div class="exp-company">TAP Academy, Bangalore</div>
+      <div class="exp-desc">Full-stack projects using Java, Spring & MySQL in agile teams. Developed RESTful APIs and implemented frontend interfaces including a Food Delivery Application.</div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Jan 2024 – Jun 2024</div>
+      <div class="exp-role">Web Development Intern</div>
+      <div class="exp-company">Onsite</div>
+      <div class="exp-desc">Responsive websites using HTML, CSS & JavaScript. Collaborated with design teams to build user-friendly interfaces and modern web solutions.</div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Oct 2022 – Nov 2022</div>
+      <div class="exp-role">AICTE Ideal Lab Intern</div>
+      <div class="exp-company">AICTE</div>
+      <div class="exp-desc">Hands-on work with 3D printing, laser cutting, PCB manufacturing. Practical experience bridging software and hardware prototyping.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-header reveal" style="margin-bottom: 48px;">
+      <div>
+        <div class="section-num">05 / Edu</div>
+        <h2 class="section-title">Where<br><em style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;">I learned.</em></h2>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">2021 – 2025</div>
+      <div class="exp-role">B.E. — Information Science</div>
+      <div class="exp-company">Malnad College of Engineering, Hassan</div>
+      <div class="exp-desc">CGPA 7.0/10. Core: Data Structures, Web Development, AI/ML, Software Engineering. Built multiple full-stack and ML projects during this period.</div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">2019 – 2021</div>
+      <div class="exp-role">Pre-University — PCMB</div>
+      <div class="exp-company">M. Krishna PU College, Hassan</div>
+      <div class="exp-desc">80% aggregate. First Class. Specialization in Physics, Chemistry, Mathematics and Biology.</div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">2018 – 2019</div>
+      <div class="exp-role">SSLC — State Board</div>
+      <div class="exp-company">Swarna High School, Holenarasipura</div>
+      <div class="exp-desc">85% aggregate. Distinction. Strong foundation in Mathematics, Science and English.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-header reveal" style="margin-bottom: 48px;">
+    <div>
+      <div class="section-num">06 / Contact</div>
+      <h2 class="section-title">Let's<br><em style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: var(--gold);">connect.</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+
+  <p class="contact-desc reveal">
+    Open to full-time roles, freelance projects, and interesting conversations. Let's build something meaningful.
+  </p>
+
+  <div class="contact-grid reveal">
+    <div class="contact-cell">
+      <div class="contact-label">Email</div>
+      <a href="mailto:dileepkmrc@gmail.com" class="contact-val">dileepkmrc@gmail.com</a>
+    </div>
+    <div class="contact-cell">
+      <div class="contact-label">Location</div>
+      <span class="contact-val">Hassan / Bangalore, India</span>
+    </div>
+    <div class="contact-cell">
+      <div class="contact-label">GitHub</div>
+      <a href="https://github.com/Dileep-kumarc" target="_blank" class="contact-val">github.com/Dileep-kumarc</a>
+    </div>
+    <div class="contact-cell">
+      <div class="contact-label">LinkedIn</div>
+      <span class="contact-val">linkedin.com/in/dileep</span>
+    </div>
+  </div>
+
+  <p class="footer-line reveal">© 2025 Dileep Kumar C — Crafted with intention</p>
+</section>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
