@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dileep Kumar C — Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;1,300;1,600&display=swap" rel="stylesheet">
+  <!-- SEO / Social -->
+  <meta name="description" content="Dileep Kumar C — Full Stack Developer. Building full-stack products combining web engineering and AI. View projects, play demos, and contact for work.">
+  <meta name="theme-color" content="#060608">
+  <meta property="og:title" content="Dileep Kumar C — Full Stack Developer">
+  <meta property="og:description" content="Full-stack dev focusing on web + AI. Explore projects, demos, and contact.">
+  <meta property="og:image" content="/favicon.svg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@Dileep-kumarc">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.json">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #060608;
+  --fg: #e8e4d9;
+  --accent: #ff3c00;
+  --accent2: #00ff9d;
+  --dim: #3a3830;
+  --mid: #7a7468;
+  --mono: 'Space Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
+  --serif: 'Crimson Pro', serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+}
+
+/* ─── CURSOR ─── */
+#cur { position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .08s; mix-blend-mode:difference; }
+#cur2 { position:fixed;width:40px;height:40px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transition:all .2s ease;mix-blend-mode:difference; }
+body:has(a:hover) #cur { transform:scale(3); }
+body:has(a:hover) #cur2 { opacity:0; }
+body:has(.mag-btn:hover) #cur { transform:scale(0); }
+
+/* ─── LOADER ─── */
+#loader {
+  position:fixed;inset:0;background:var(--bg);z-index:10000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;
+  transition:opacity .6s ease .2s;
+}
+#loader.done { opacity:0;pointer-events:none; }
+.load-bar { width:200px;height:1px;background:var(--dim); }
+.load-fill { height:100%;background:var(--accent);width:0%;transition:width .04s linear; }
+.load-txt { font-size:10px;letter-spacing:.2em;color:var(--mid);text-transform:uppercase; }
+
+/* ─── NOISE ─── */
+body::after {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.5;
+}
+
+/* ─── NAV ─── */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:24px 48px;display:flex;justify-content:space-between;align-items:center;
+  mix-blend-mode:difference;
+}
+.nav-logo { font-family:var(--display);font-size:28px;letter-spacing:.05em;color:var(--fg);text-decoration:none; }
+.nav-right { display:flex;gap:32px;align-items:center; }
+.nav-link { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .2s; }
+.nav-link:hover { color:var(--fg); }
+.nav-status { display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2); }
+.status-dot { width:6px;height:6px;background:var(--accent2);border-radius:50%;animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+
+/* ─── HERO ─── */
+.hero {
+  min-height:100vh;display:flex;align-items:flex-end;
+  padding:0 48px 80px;position:relative;overflow:hidden;
+}
+.hero-bg-text {
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--display);font-size:clamp(120px,18vw,280px);
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.04);
+  white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-.02em;
+  animation:drift 20s ease-in-out infinite alternate;
+}
+@keyframes drift { from{transform:translate(-50%,-50%) translateX(-20px)} to{transform:translate(-50%,-50%) translateX(20px)} }
+.hero-content { position:relative;z-index:2;width:100%; }
+.hero-tag {
+  font-size:10px;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:12px;
+}
+.hero-tag::before { content:'';display:block;width:24px;height:1px;background:var(--accent); }
+h1.name {
+  font-family:var(--display);
+  font-size:clamp(64px,10vw,160px);
+  line-height:.9;letter-spacing:-.01em;
+  color:var(--fg);
+}
+h1.name .italic-name {
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  color:transparent;-webkit-text-stroke:1px var(--fg);
+}
+.hero-bottom {
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:40px;
+}
+.hero-desc {
+  font-family:var(--serif);font-style:italic;font-size:20px;
+  color:var(--mid);line-height:1.5;max-width:400px;font-weight:300;
+}
+.hero-cta { display:flex;gap:16px;align-items:center; }
+
+/* ─── MAGNETIC BUTTON ─── */
+.mag-btn {
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  padding:16px 40px;font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;text-decoration:none;cursor:none;
+  transition:background .2s,color .2s;overflow:hidden;
+}
+.mag-btn.primary { background:var(--accent);color:#fff;border:1px solid var(--accent); }
+.mag-btn.ghost { background:transparent;color:var(--fg);border:1px solid var(--dim); }
+.mag-btn.ghost:hover { border-color:var(--fg); }
+.mag-btn .btn-inner { position:relative;z-index:1;pointer-events:none; }
+.mag-btn::before {
+  content:'';position:absolute;inset:-2px;background:var(--accent2);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s ease;
+}
+.mag-btn.ghost::before { background:var(--fg); }
+.mag-btn:hover::before { transform:scaleX(1); }
+.mag-btn:hover { color:var(--bg); }
+
+/* ─── SCROLLING TICKER ─── */
+.ticker { border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);overflow:hidden;padding:12px 0; }
+.ticker-track { display:flex;animation:tick 25s linear infinite;white-space:nowrap; }
+.tick-item {
+  font-family:var(--display);font-size:13px;letter-spacing:.1em;
+  padding:0 28px;color:var(--dim);display:flex;align-items:center;gap:28px;
+  transition:color .2s;
+}
+.tick-item:hover { color:var(--accent); }
+.tick-sep { color:var(--accent);font-size:8px; }
+@keyframes tick { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+
+/* ─── SECTIONS ─── */
+section { position:relative;z-index:2; }
+.sec-label {
+  font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px;
+}
+.sec-title {
+  font-family:var(--display);font-size:clamp(48px,6vw,96px);
+  letter-spacing:.01em;line-height:1;margin-bottom:64px;
+}
+.sec-title em {
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  color:transparent;-webkit-text-stroke:1px var(--fg);
+}
+
+/* ─── ABOUT STRIP ─── */
+.about-strip {
+  padding:120px 48px;display:grid;grid-template-columns:1fr 1fr;gap:120px;
+  border-top:1px solid var(--dim);
+}
+.about-big-text {
+  font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,36px);
+  font-weight:300;line-height:1.5;color:var(--fg);
+}
+.about-big-text span { color:var(--accent); font-style:normal; }
+.about-stats { display:flex;flex-direction:column;gap:32px;justify-content:flex-end; }
+.stat-row { border-bottom:1px solid var(--dim);padding-bottom:24px; }
+.stat-num { font-family:var(--display);font-size:56px;color:var(--fg);line-height:1; }
+.stat-label { font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);margin-top:4px; }
+
+/* ─── SKILLS ─── */
+.skills-section { padding:120px 48px;border-top:1px solid var(--dim); }
+.skills-track {
+  display:flex;flex-direction:column;gap:0;
+}
+.skill-bar {
+  display:grid;grid-template-columns:200px 1fr 80px;
+  align-items:center;gap:32px;
+  padding:20px 0;border-bottom:1px solid var(--dim);
+  cursor:none;transition:padding .3s;
+}
+.skill-bar:hover { padding-left:24px;background:rgba(255,60,0,.03); }
+.skill-bar:hover .skill-fill { background:var(--accent); }
+.skill-bar:hover .skill-pct { color:var(--accent); }
+.skill-name-label { font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg); }
+.skill-track { height:1px;background:var(--dim);position:relative;overflow:hidden; }
+.skill-fill { height:100%;background:var(--mid);transition:background .3s;transform-origin:left;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.16,1,.3,1),background .3s; }
+.skill-fill.animate { transform:scaleX(1); }
+.skill-pct { font-size:10px;letter-spacing:.1em;color:var(--mid);text-align:right;transition:color .3s; }
+
+/* ─── PROJECTS ─── */
+.projects-section { padding:120px 48px;border-top:1px solid var(--dim); }
+.projects-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--dim); }
+.proj-card {
+  background:var(--bg);padding:48px 40px;
+  text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+  cursor:none;
+}
+.proj-card:hover { background:#0d0d10; }
+.proj-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.proj-card:hover::before { transform:scaleX(1); }
+.proj-card-num { font-size:10px;letter-spacing:.2em;color:var(--dim);margin-bottom:32px; }
+.proj-card-title {
+  font-family:var(--display);font-size:32px;letter-spacing:.02em;
+  color:var(--fg);margin-bottom:16px;line-height:1;
+}
+.proj-card-desc { font-size:12px;line-height:1.8;color:var(--mid);margin-bottom:32px; }
+.proj-card-tags { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px; }
+.proj-tag {
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--dim);padding:4px 10px;color:var(--mid);
+  transition:border-color .2s,color .2s;
+}
+.proj-card:hover .proj-tag { border-color:var(--accent);color:var(--accent); }
+.proj-card-arrow {
+  font-size:24px;color:var(--dim);
+  transition:transform .3s,color .3s;
+  display:inline-block;
+}
+.proj-card:hover .proj-card-arrow { transform:translate(6px,-6px);color:var(--accent); }
+
+/* FEATURED PROJECT */
+.proj-card.featured { grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:64px; }
+.proj-feat-right { display:flex;flex-direction:column;justify-content:flex-end; }
+.proj-feat-badge {
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--accent);color:#fff;padding:4px 12px;
+  display:inline-block;margin-bottom:20px;
+}
+.proj-feat-title { font-family:var(--display);font-size:56px;letter-spacing:.02em;line-height:1;color:var(--fg);margin-bottom:16px; }
+.proj-feat-desc { font-family:var(--serif);font-style:italic;font-weight:300;font-size:18px;line-height:1.6;color:var(--mid); }
+
+/* ─── EXPERIENCE ─── */
+.exp-section { padding:120px 48px;border-top:1px solid var(--dim); }
+.exp-list { display:flex;flex-direction:column; }
+.exp-item {
+  display:grid;grid-template-columns:160px 1fr 160px;
+  gap:48px;align-items:start;
+  padding:40px 0;border-bottom:1px solid var(--dim);
+  transition:padding .3s;cursor:none;
+}
+.exp-item:first-child { border-top:1px solid var(--dim); }
+.exp-item:hover { padding-left:20px; }
+.exp-date { font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);padding-top:4px; }
+.exp-role { font-family:var(--display);font-size:28px;letter-spacing:.03em;margin-bottom:6px; }
+.exp-company { font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mid);margin-bottom:12px; }
+.exp-desc { font-size:11px;line-height:1.9;color:var(--mid); }
+.exp-type { font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-align:right;padding-top:4px; }
+
+/* ─── TERMINAL EASTER EGG ─── */
+.terminal-section {
+  padding:80px 48px;border-top:1px solid var(--dim);
+  background:rgba(0,255,157,.02);
+}
+.terminal-wrap {
+  border:1px solid var(--accent2);max-width:640px;
+  font-family:var(--mono);
+}
+.terminal-bar {
+  background:rgba(0,255,157,.08);padding:10px 16px;
+  display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,255,157,.2);
+}
+.t-dot { width:10px;height:10px;border-radius:50%; }
+.terminal-body { padding:24px;font-size:12px;line-height:2;color:var(--accent2); }
+.t-prompt { color:var(--mid); }
+.t-input { color:var(--fg); }
+.t-output { color:var(--accent2); }
+.t-cursor { display:inline-block;width:8px;height:14px;background:var(--accent2);animation:blink .8s step-end infinite;vertical-align:middle; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+#term-input-area { display:flex;align-items:center;gap:8px;margin-top:8px; }
+#term-input {
+  background:transparent;border:none;outline:none;
+  font-family:var(--mono);font-size:12px;color:var(--fg);
+  flex:1;caret-color:var(--accent2);
+}
+.t-line { animation:typeIn .3s ease forwards;opacity:0; }
+@keyframes typeIn { to{opacity:1} }
+
+/* ─── CONTACT ─── */
+.contact-section {
+  padding:140px 48px 100px;border-top:1px solid var(--dim);
+  position:relative;overflow:hidden;
+}
+.contact-bg-word {
+  position:absolute;bottom:-60px;right:-40px;
+  font-family:var(--display);font-size:clamp(140px,20vw,300px);
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.03);
+  user-select:none;pointer-events:none;letter-spacing:-.02em;
+}
+.contact-email {
+  font-family:var(--display);font-size:clamp(32px,5vw,72px);
+  color:var(--fg);text-decoration:none;letter-spacing:.02em;
+  display:block;margin-bottom:64px;
+  transition:color .3s;position:relative;z-index:2;
+}
+.contact-email:hover { color:var(--accent); }
+.contact-email::after {
+  content:'';display:block;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform .4s ease;
+}
+.contact-email:hover::after { transform:scaleX(1); }
+.contact-row {
+  display:flex;justify-content:space-between;align-items:flex-end;
+  position:relative;z-index:2;
+}
+.contact-links { display:flex;gap:24px; }
+.contact-link {
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--mid);text-decoration:none;transition:color .2s;
+}
+.contact-link:hover { color:var(--accent2); }
+.footer-copy { font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim); }
+
+/* ─── GLITCH ─── */
+.glitch { position:relative;display:inline-block; }
+.glitch::before,.glitch::after {
+  content:attr(data-text);position:absolute;top:0;left:0;
+  clip-path:polygon(0 0,100% 0,100% 35%,0 35%);
+}
+.glitch::before { color:var(--accent);animation:glitch1 4s infinite; left:2px; }
+.glitch::after { color:var(--accent2);animation:glitch2 4s infinite; left:-2px; }
+@keyframes glitch1 {
+  0%,90%,100%{opacity:0} 91%{opacity:1;transform:translateX(-2px)} 93%{opacity:0} 95%{opacity:1;transform:translateX(2px)} 97%{opacity:0}
+}
+@keyframes glitch2 {
+  0%,92%,100%{opacity:0} 93%{opacity:1;transform:translateX(2px)} 95%{opacity:0} 97%{opacity:1;transform:translateX(-2px)} 99%{opacity:0}
+}
+
+/* ─── SCROLL REVEAL ─── */
+.rev { opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease; }
+.rev.vis { opacity:1;transform:none; }
+.rev-left { opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s ease; }
+.rev-left.vis { opacity:1;transform:none; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--accent); }
+
+/* ─── PROGRESS BAR ─── */
+#scroll-progress {
+  position:fixed;top:0;left:0;height:2px;
+  background:var(--accent);z-index:9000;
+  transition:width .1s linear;
+}
+
+@media(max-width:900px){
+  nav{padding:20px 24px;}
+  .hero{padding:0 24px 60px;}
+  .about-strip{grid-template-columns:1fr;gap:48px;padding:80px 24px;}
+  .projects-grid{grid-template-columns:1fr;}
+  .proj-card.featured{grid-column:auto;grid-template-columns:1fr;}
+  .exp-item{grid-template-columns:1fr;gap:8px;padding:28px 0;}
+  .exp-type{display:none;}
+  .skills-section,.projects-section,.exp-section,.contact-section{padding:80px 24px;}
+  .contact-row{flex-direction:column;gap:24px;align-items:flex-start;}
+  .terminal-section{padding:60px 24px;}
+}
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .ticker-track { animation-play-state: paused !important; }
+}
+
+/* Restore native cursor for accessibility and keyboard users */
+body * { cursor: auto !important; }
+
+/* Focus styles */
+a:focus, button:focus, input:focus { outline:2px solid var(--accent); outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="load-txt" id="load-label">Initializing...</div>
+  <div class="load-bar"><div class="load-fill" id="load-fill"></div></div>
+  <div class="load-txt" id="load-pct">0%</div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- CURSOR -->
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">DK</a>
+  <div class="nav-right">
+    <a href="#projects" class="nav-link">Work</a>
+    <a href="#experience" class="nav-link">Experience</a>
+    <a href="#contact" class="nav-link">Contact</a>
+    <div class="nav-status"><div class="status-dot"></div>Open to Work</div>
+    <div id="live-visitors" style="font-size:10px;color:var(--mid);margin-left:8px;">• 0 viewers</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-text">DEVELOPER</div>
+  <div class="hero-content">
+    <div class="hero-tag">Full Stack Developer · Hassan, India</div>
+    <h1 class="name">
+      <span class="glitch" data-text="DILEEP">DILEEP</span><br>
+      <span class="italic-name">Kumar C.</span>
+    </h1>
+    <div class="hero-bottom">
+          <div>Score: <span id="game-score">0</span></div>
+          <div><button id="game-restart" class="mag-btn ghost"><span class="btn-inner">Restart</span></button></div>
+        </div>
+        <div id="p5-container"></div>
+      </div>
+    </div>
+  </div>
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/service-worker.js').then(()=>{
+      console.log('SW registered');
+    }).catch(err=>console.warn('SW registration failed',err));
+  });
+}
+</script>
+
+<!-- Resume generator script -->
+<script>
+function updatePreview(){
+  const name=document.getElementById('r-name').value||'Your Name';
+  const role=document.getElementById('r-role').value||'Title';
+  const summary=document.getElementById('r-summary').value||'A short summary about you.';
+  document.getElementById('resume-preview').textContent = `${name} · ${role}\n\n${summary}`;
+}
+document.getElementById('r-name').addEventListener('input',updatePreview);
+document.getElementById('r-role').addEventListener('input',updatePreview);
+document.getElementById('r-summary').addEventListener('input',updatePreview);
+
+document.getElementById('play-mini-game').addEventListener('click',()=>{
+  // Scroll to the mini-game section and (re)start the game
+  const gameSection = document.getElementById('game');
+  if(gameSection) gameSection.scrollIntoView({behavior:'smooth'});
+  if(window.gameP5){ try{ gameP5.remove(); }catch(e){} startGame(); }
+  else if(typeof startGame === 'function') startGame();
+});
+
+document.getElementById('copy-resume-link').addEventListener('click',()=>{
+  const payload = {
+    name: document.getElementById('r-name').value||'',
+    role: document.getElementById('r-role').value||'',
+    email: document.getElementById('r-email').value||'',
+    summary: document.getElementById('r-summary').value||''
+  };
+  const hash = btoa(JSON.stringify(payload));
+  const link = location.origin + location.pathname + `#resume=${hash}`;
+  navigator.clipboard.writeText(link).then(()=>{
+    document.getElementById('resume-link-out').textContent = 'Share link copied to clipboard';
+  });
+});
+
+// If opened with resume hash, prefill preview
+window.addEventListener('load',()=>{
+  const m = location.hash.match(/resume=([^&]+)/);
+  if(m){ try{ const obj = JSON.parse(atob(m[1])); document.getElementById('r-name').value=obj.name||''; document.getElementById('r-role').value=obj.role||''; document.getElementById('r-email').value=obj.email||''; document.getElementById('r-summary').value=obj.summary||''; updatePreview(); document.getElementById('resume-link-out').textContent='Shared resume loaded.';}catch(e){} }
+});
+</script>
+          <div>Score: <span id="game-score">0</span></div>
+          <div><button id="game-restart" class="mag-btn ghost"><span class="btn-inner">Restart</span></button></div>
+        </div>
+        <div id="p5-container"></div>
+      </div>
+      <div style="width:320px;background:#0b0b0c;padding:16px;border:1px solid var(--dim);">
+        <h4 style="font-family:var(--display);margin-bottom:8px;color:var(--fg);">Leaderboard</h4>
+        <div id="leaderboard-list" style="margin-bottom:12px;color:var(--mid);font-size:13px;">Loading...</div>
+        <div style="margin-bottom:8px;"><input id="player-name" placeholder="Your name" style="width:100%;padding:8px;background:transparent;border:1px solid var(--dim);color:var(--fg);"/></div>
+        <div style="display:flex;gap:8px;">
+          <button id="submit-score" class="mag-btn primary"><span class="btn-inner">Submit Score</span></button>
+          <button id="share-score" class="mag-btn ghost"><span class="btn-inner">Share</span></button>
+        </div>
+        <div id="leaderboard-note" style="margin-top:12px;font-size:12px;color:var(--mid);">If Supabase is not configured, use Share to create a score link.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME GENERATOR -->
+<section class="contact-section rev" id="resume-gen">
+  <div style="padding:40px 48px;">
+    <div class="sec-label">07 / Resume</div>
+    <h2 class="sec-title">Personalized <em>Resume</em></h2>
+    <p style="color:var(--mid);max-width:700px;margin-bottom:16px;">Fill your details below — then jump straight into the mini-game to show off your score.</p>
+    <div style="display:flex;gap:16px;max-width:900px;">
+      <div style="flex:1;">
+        <input id="r-name" placeholder="Full name" style="width:100%;padding:12px;margin-bottom:8px;background:transparent;border:1px solid var(--dim);color:var(--fg);"/>
+        <input id="r-role" placeholder="Title (e.g., Software Engineer)" style="width:100%;padding:12px;margin-bottom:8px;background:transparent;border:1px solid var(--dim);color:var(--fg);"/>
+        <input id="r-email" placeholder="Email" style="width:100%;padding:12px;margin-bottom:8px;background:transparent;border:1px solid var(--dim);color:var(--fg);"/>
+        <textarea id="r-summary" placeholder="Short summary" style="width:100%;padding:12px;margin-bottom:8px;background:transparent;border:1px solid var(--dim);color:var(--fg);height:120px;"></textarea>
+        <div style="display:flex;gap:8px;"><button id="play-mini-game" class="mag-btn primary"><span class="btn-inner">Play Mini Game</span></button><button id="copy-resume-link" class="mag-btn ghost"><span class="btn-inner">Copy Share Link</span></button></div>
+        <div id="resume-link-out" style="margin-top:8px;color:var(--mid);font-size:13px;"></div>
+      </div>
+      <div style="width:320px;padding:12px;border:1px solid var(--dim);">
+        <div style="color:var(--fg);font-family:var(--display);font-size:18px;margin-bottom:8px;">Preview</div>
+        <div id="resume-preview" style="color:var(--mid);font-family:var(--serif);font-style:italic;white-space:pre-wrap;">Name · Role
+Summary will appear here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="tick-item">Java <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Spring Boot <span class="tick-sep">✦</span></span>
+    <span class="tick-item">React <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Next.js <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Python <span class="tick-sep">✦</span></span>
+    <span class="tick-item">TensorFlow <span class="tick-sep">✦</span></span>
+    <span class="tick-item">MySQL <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Flask <span class="tick-sep">✦</span></span>
+    <span class="tick-item">TypeScript <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Tailwind CSS <span class="tick-sep">✦</span></span>
+    <span class="tick-item">REST APIs <span class="tick-sep">✦</span></span>
+    <span class="tick-item">CNN / Deep Learning <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Java <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Spring Boot <span class="tick-sep">✦</span></span>
+    <span class="tick-item">React <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Next.js <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Python <span class="tick-sep">✦</span></span>
+    <span class="tick-item">TensorFlow <span class="tick-sep">✦</span></span>
+    <span class="tick-item">MySQL <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Flask <span class="tick-sep">✦</span></span>
+    <span class="tick-item">TypeScript <span class="tick-sep">✦</span></span>
+    <span class="tick-item">Tailwind CSS <span class="tick-sep">✦</span></span>
+    <span class="tick-item">REST APIs <span class="tick-sep">✦</span></span>
+    <span class="tick-item">CNN / Deep Learning <span class="tick-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div class="rev-left">
+    <div class="sec-label">01 / About</div>
+    <p class="about-big-text">
+      Information Science graduate from <span>Malnad College of Engineering</span> —
+      building full-stack products that sit at the intersection of
+      <span>web engineering</span> and <span>artificial intelligence</span>.
+      Currently interning at TAP Academy, Bangalore.
+    </p>
+  </div>
+  <div class="about-stats rev">
+    <div class="stat-row">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Projects shipped</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Internships completed</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-num">92%</div>
+      <div class="stat-label">CNN model accuracy</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="rev">
+    <div class="sec-label">02 / Skills</div>
+    <div class="sec-title">What I <em>know.</em></div>
+  </div>
+  <div class="skills-track rev">
+    <div class="skill-bar" data-skill="88">
+      <span class="skill-name-label">Java</span>
+      <div class="skill-track"><div class="skill-fill" style="--w:.88"></div></div>
+      <span class="skill-pct">88%</span>
+    </div>
+    <div class="skill-bar" data-skill="82">
+      <span class="skill-name-label">Spring Boot</span>
+      <div class="skill-track"><div class="skill-fill" style="--w:.82"></div></div>
+      <span class="skill-pct">82%</span>
+    </div>
+    <div class="skill-bar" data-skill="80">
+      <span class="skill-name-label">React / Next.js</span>
+      <div class="skill-track"><div class="skill-fill" style="--w:.80"></div></div>
+      <span class="skill-pct">80%</span>
+    </div>
+    <div class="skill-bar" data-skill="78">
+      <span class="skill-name-label">Python</span>
+      <div class="skill-track"><div class="skill-fill" style="--w:.78"></div></div>
+      <span class="skill-pct">78%</span>
+    </div>
+    <div class="skill-bar" data-skill="72">
+      <span class="skill-name-label">TensorFlow / CNN</span>
+      <div class="skill-track"><div class="skill-fill" style="--w:.72"></div></div>
+      <span class="skill-pct">72%</span>
+    </div>
+    <div class="skill-bar" data-skill="75">
+      <span class="skill-name-label">MySQL</span>
+      <div class="skill-track"><div class="skill-fill" style="--w:.75"></div></div>
+      <span class="skill-pct">75%</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="rev">
+    <div class="sec-label">03 / Projects</div>
+    <div class="sec-title">Things I <em>built.</em></div>
+  </div>
+  <div class="projects-grid">
+
+    <!-- FEATURED -->
+    <a href="https://kumar-workings.vercel.app/" target="_blank" class="proj-card featured rev">
+      <div class="proj-feat-left">
+        <div class="proj-feat-badge">Featured</div>
+        <div class="proj-feat-title">Biomarker Intelligence Platform</div>
+        <div class="proj-card-tags">
+          <span class="proj-tag">Next.js</span>
+          <span class="proj-tag">TypeScript</span>
+          <span class="proj-tag">React</span>
+          <span class="proj-tag">Tailwind</span>
+        </div>
+      </div>
+      <div class="proj-feat-right">
+        <p class="proj-feat-desc">Healthcare analytics platform visualizing biomarker trends and supporting clinical decisions with interactive charts. Live on Vercel.</p>
+        <div style="margin-top:24px;"><span class="proj-card-arrow">↗</span></div>
+      </div>
+    </a>
+
+    <a href="https://dileep-kumarc.github.io/space-shooters/" target="_blank" class="proj-card rev">
+      <div class="proj-card-num">02</div>
+      <div class="proj-card-title">AI Space Defense</div>
+      <div class="proj-card-desc">Cyberpunk space shooter exploring AI ethics through gameplay. Dynamic difficulty, global leaderboard via Supabase.</div>
+      <div class="proj-card-tags">
+        <span class="proj-tag">p5.js</span>
+        <span class="proj-tag">Supabase</span>
+        <span class="proj-tag">JavaScript</span>
+      </div>
+      <span class="proj-card-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/Dileep-kumarc/Brain-Tumor-Detection-using-CNN.git" target="_blank" class="proj-card rev">
+      <div class="proj-card-num">03</div>
+      <div class="proj-card-title">Brain Tumor CNN</div>
+      <div class="proj-card-desc">Deep learning model with 92% accuracy detecting brain tumors from MRI scans. TensorFlow + PyTorch + Streamlit.</div>
+      <div class="proj-card-tags">
+        <span class="proj-tag">Python</span>
+        <span class="proj-tag">TensorFlow</span>
+        <span class="proj-tag">CNN</span>
+      </div>
+      <span class="proj-card-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/Dileep-kumarc/AIhub.git" target="_blank" class="proj-card rev">
+      <div class="proj-card-num">04</div>
+      <div class="proj-card-title">AI Central Hub</div>
+      <div class="proj-card-desc">ML project-sharing platform with role-based access, code previews, and user feedback system. Full-stack Flask + MySQL.</div>
+      <div class="proj-card-tags">
+        <span class="proj-tag">Flask</span>
+        <span class="proj-tag">MySQL</span>
+        <span class="proj-tag">JS</span>
+      </div>
+      <span class="proj-card-arrow">↗</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="exp-section" id="experience">
+  <div class="rev">
+    <div class="sec-label">04 / Experience</div>
+    <div class="sec-title">Where I <em>worked.</em></div>
+  </div>
+  <div class="exp-list">
+    <div class="exp-item rev">
+      <div class="exp-date">Jul 2025 – Present</div>
+      <div class="exp-main">
+        <div class="exp-role">Java Full Stack Intern</div>
+        <div class="exp-company">TAP Academy, Bangalore</div>
+        <div class="exp-desc">Full-stack development using Java, Spring & MySQL in agile teams. Built RESTful APIs, frontend interfaces, and a Food Delivery Application.</div>
+      </div>
+      <div class="exp-type">Internship</div>
+    </div>
+    <div class="exp-item rev">
+      <div class="exp-date">Jan – Jun 2024</div>
+      <div class="exp-main">
+        <div class="exp-role">Web Development Intern</div>
+        <div class="exp-company">Onsite</div>
+        <div class="exp-desc">Responsive websites using HTML, CSS & JavaScript. Collaborated with design teams to build user-friendly interfaces.</div>
+      </div>
+      <div class="exp-type">Internship</div>
+    </div>
+    <div class="exp-item rev">
+      <div class="exp-date">Oct – Nov 2022</div>
+      <div class="exp-main">
+        <div class="exp-role">AICTE Ideal Lab Intern</div>
+        <div class="exp-company">AICTE</div>
+        <div class="exp-desc">Hands-on with 3D printing, laser cutting, PCB manufacturing. Bridging software and hardware prototyping.</div>
+      </div>
+      <div class="exp-type">Internship</div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMINAL EASTER EGG -->
+<section class="terminal-section rev">
+  <div class="sec-label" style="margin-bottom:20px;">// Easter Egg — Try the terminal</div>
+  <div class="terminal-wrap">
+    <div class="terminal-bar">
+      <div class="t-dot" style="background:#ff5f57"></div>
+      <div class="t-dot" style="background:#febc2e"></div>
+      <div class="t-dot" style="background:#28c840"></div>
+      <span style="font-size:11px;color:var(--mid);margin-left:8px;letter-spacing:.1em">dileep@portfolio ~ </span>
+    </div>
+    <div class="terminal-body" id="term-body">
+      <div><span class="t-prompt">dileep@portfolio:~$ </span><span class="t-input">help</span></div>
+      <div class="t-output">Available commands: <span style="color:var(--fg)">about</span> · <span style="color:var(--fg)">skills</span> · <span style="color:var(--fg)">contact</span> · <span style="color:var(--fg)">projects</span> · <span style="color:var(--fg)">clear</span></div>
+      <div id="term-input-area">
+        <span class="t-prompt">dileep@portfolio:~$ </span>
+        <input id="term-input" autofocus placeholder="type a command..." spellcheck="false"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-bg-word">HELLO</div>
+  <div class="rev">
+    <div class="sec-label" style="margin-bottom:16px;">05 / Contact</div>
+    <p style="font-family:var(--serif);font-style:italic;font-size:18px;color:var(--mid);margin-bottom:48px;font-weight:300;">
+      Open to full-time roles, freelance gigs & interesting ideas.
+    </p>
+    <a href="mailto:dileepkmrc@gmail.com" class="contact-email">dileepkmrc@gmail.com</a>
+  </div>
+  <div class="contact-row rev">
+    <div class="contact-links">
+      <a href="https://github.com/Dileep-kumarc" target="_blank" class="contact-link">GitHub ↗</a>
+      <a href="#" class="contact-link">LinkedIn ↗</a>
+      <a href="https://dilipkumar-c.netlify.app" target="_blank" class="contact-link">Live Site ↗</a>
+    </div>
+    <div class="footer-copy">© 2025 Dileep Kumar C</div>
+  </div>
+</section>
+
+<script>
+// ─── LOADER ───
+const fills = ['Booting system...','Loading modules...','Compiling assets...','Ready.'];
+let pct = 0;
+const fillEl = document.getElementById('load-fill');
+const pctEl = document.getElementById('load-pct');
+const lblEl = document.getElementById('load-label');
+const loader = document.getElementById('loader');
+const iv = setInterval(() => {
+  pct += Math.random() * 18;
+  if(pct >= 100){ pct = 100; clearInterval(iv); setTimeout(()=>loader.classList.add('done'),400); }
+  fillEl.style.width = pct+'%';
+  pctEl.textContent = Math.round(pct)+'%';
+  lblEl.textContent = fills[Math.min(3,Math.floor(pct/26))];
+},120);
+
+// ─── CURSOR ───
+const cur = document.getElementById('cur');
+const cur2 = document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function anim(){
+  cur.style.transform=`translate(${mx-4}px,${my-4}px)`;
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  cur2.style.transform=`translate(${rx-20}px,${ry-20}px)`;
+  requestAnimationFrame(anim);
+})();
+
+// ─── SCROLL PROGRESS ───
+const prog = document.getElementById('scroll-progress');
+window.addEventListener('scroll',()=>{
+  const s = document.documentElement.scrollTop;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = (s/h*100)+'%';
+});
+
+// ─── SCROLL REVEAL ───
+const revEls = document.querySelectorAll('.rev,.rev-left');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('vis'),i*80); });
+},{threshold:.1});
+revEls.forEach(r=>obs.observe(r));
+
+// ─── SKILL BARS ───
+const skillObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const fills = e.target.querySelectorAll('.skill-fill');
+      fills.forEach((f,i)=>{
+        const w = f.style.getPropertyValue('--w') || '.7';
+        setTimeout(()=>{
+          f.style.transform = `scaleX(${w})`;
+          f.classList.add('animate');
+        }, i*100);
+      });
+    }
+  });
+},{threshold:.2});
+document.querySelectorAll('.skills-track').forEach(s=>skillObs.observe(s));
+
+// ─── MAGNETIC BUTTONS ───
+document.querySelectorAll('.mag-btn').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX-r.left-r.width/2;
+    const y = e.clientY-r.top-r.height/2;
+    btn.style.transform=`translate(${x*.25}px,${y*.25}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>btn.style.transform='');
+});
+
+// ─── TERMINAL ───
+const termBody = document.getElementById('term-body');
+const termInput = document.getElementById('term-input');
+const inputArea = document.getElementById('term-input-area');
+const cmds = {
+  about: `> Dileep Kumar C\n> B.E. Information Science, Malnad College of Engineering\n> CGPA: 7.0 | 2025 Graduate\n> Location: Hassan / Bangalore, India`,
+  skills: `> Languages: Java, Python, JavaScript, TypeScript\n> Frontend:  React, Next.js, HTML, CSS, Tailwind\n> Backend:   Spring Boot, Flask, REST APIs\n> Database:  MySQL\n> AI/ML:     TensorFlow, PyTorch, CNN`,
+  contact: `> Email:    dileepkmrc@gmail.com\n> GitHub:   github.com/Dileep-kumarc\n> Status:   Open to work ✓`,
+  projects: `> [1] Biomarker Intelligence Platform — vercel.app\n> [2] AI Space Defense — github.io\n> [3] Brain Tumor CNN — 92% accuracy\n> [4] AI Central Hub — Flask + MySQL\n> [5] Online Calculators — freeonlinecalculators.online`,
+  clear: '__clear__',
+  help: `> about · skills · contact · projects · clear`,
+};
+termInput.addEventListener('keydown',e=>{
+  if(e.key!=='Enter') return;
+  const cmd = termInput.value.trim().toLowerCase();
+  termInput.value='';
+  if(!cmd) return;
+  inputArea.insertAdjacentHTML('beforebegin',
+    `<div class="t-line"><span class="t-prompt">dileep@portfolio:~$ </span><span class="t-input">${cmd}</span></div>`
+  );
+  if(cmds[cmd]){
+    if(cmds[cmd]==='__clear__'){
+      termBody.innerHTML = `<div id="term-input-area"><span class="t-prompt">dileep@portfolio:~$ </span><input id="term-input" spellcheck="false" placeholder="type a command..."/></div>`;
+      document.getElementById('term-input').addEventListener('keydown',arguments.callee);
+      return;
+    }
+    cmds[cmd].split('\n').forEach((line,i)=>{
+      setTimeout(()=>{
+        inputArea.insertAdjacentHTML('beforebegin',`<div class="t-line t-output">${line}</div>`);
+        termBody.scrollTop=termBody.scrollHeight;
+      },i*60);
+    });
+  } else {
+    inputArea.insertAdjacentHTML('beforebegin',`<div class="t-line t-output" style="color:var(--accent)">Command not found: "${cmd}". Type "help".</div>`);
+  }
+  termBody.scrollTop=termBody.scrollHeight;
+});
+</script>
+<!-- Lightweight analytics (placeholder: replace data-domain) + live visitors widget -->
+<script async defer data-domain="your-domain.com" src="https://plausible.io/js/plausible.js"></script>
+<script>
+// simple live visitors faux widget to create FOMO (replace with real analytics)
+const liveEl = document.getElementById('live-visitors');
+function updateLive(){
+  const n = Math.max(1, Math.round(3 + Math.abs(Math.sin(Date.now()/50000))*20));
+  liveEl.textContent = `• ${n} viewers`;
+}
+updateLive(); setInterval(updateLive, 10000);
+</script>
+
+<!-- p5 and game script are loaded from game.js which dynamically loads p5 -->
+
+<!-- Register service worker for PWA -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/service-worker.js').then(()=>{
+      console.log('SW registered');
+    }).catch(err=>console.warn('SW registration failed',err));
+  });
+}
+</script>
+</body>
+</html>
